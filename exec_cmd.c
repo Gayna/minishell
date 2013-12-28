@@ -18,6 +18,8 @@ int	exec_cmd(t_cmd		*cmd,
 	int	it;
 
 	it = -1;
+	if (cmd == NULL)
+		return (NULL_CMD);
 	while (++it < NBR_FUNC)
 	{
 		if (ft_strcmp(cmd->name, bi[it]->name))

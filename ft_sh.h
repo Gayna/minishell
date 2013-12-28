@@ -39,7 +39,7 @@ struct			s_larg
 		t_arg	*next;
 };
 
-typedef int	(*t_fptr)(t_cmd *, char **env);
+typedef int	(*t_fptr)(t_lopt *,t_larg * char **);
 typedef struct	s_builtin
 {
 		char	*name;
@@ -47,7 +47,10 @@ typedef struct	s_builtin
 }				t_builtin;
 
 # define NBR_FUNC 5
-
+# define TRUE 1
+# define FALSE 0
+# define FIRST_TRUE 3
+# define NULL_CMD 4
 
 /*
 ** basic list operation func
@@ -62,11 +65,20 @@ t_larg	*add_arg(t_cmd *cmd, char *arg);
 void	destroy_cmd(t_cmd **cmd);
 void	destroy_lopt(t_lopt *opt);
 void	destroy_larg(t_larg *arg);
+
+
+/*
+** builtin
+** ----------------------
+** env.c
+*/
+int	builtin_env(t_lopt *opt, t_larg *arg, char **envp);
 /*
 ** main func
-** ------------------------
-** parse_cmd.c - exec_cmd.c
+** -----------------------------------------
+** parse_cmd.c - exec_cmd.c - get_next_cmd.c
 */
+char	*get_next_cmd(void);
 t_cmd	*parse_cmd(char *buf);
 int	exec_cmd(t_cmd *cmd, t_builtin *bi, char **envp);
 
