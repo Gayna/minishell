@@ -39,23 +39,35 @@ struct			s_larg
 		t_arg	*next;
 };
 
+typedef int	(*t_fptr)(t_cmd *, char **env);
+typedef struct	s_builtin
+{
+		char	*name;
+		t_fptr	func;
+}				t_builtin;
+
+# define NBR_FUNC 5
+
 
 /*
 ** basic list operation func
-** -------------------------
-** init.c - add.c
+** --------------------------
+** init.c - add.c - destroy.c
 */
 t_cmd	*cmd_init(void);
 t_lopt	*lopt_init(void);
 t_larg	*larg_init(void);
 t_lopt	*add_opt(t_cmd *cmd, char *opt);
 t_larg	*add_arg(t_cmd *cmd, char *arg);
+void	destroy_cmd(t_cmd **cmd);
+void	destroy_lopt(t_lopt *opt);
+void	destroy_larg(t_larg *arg);
 /*
 ** main func
-** -----------
-** parse_cmd.c
+** ------------------------
+** parse_cmd.c - exec_cmd.c
 */
 t_cmd	*parse_cmd(char *buf);
-
+int	exec_cmd(t_cmd *cmd, t_builtin *bi, char **envp);
 
 #endif /* !FT_SH_H */
