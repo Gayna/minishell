@@ -9,7 +9,7 @@
 /*   Updated: 2013/12/27 05:47:23 by nvan-hou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-# include "ft_sh.h"
+#include "ft_sh.h"
 
 
 static void	display_usage(char *bin_name)
@@ -26,18 +26,19 @@ int			main(int	argc,
 	int		res;
 	t_builtin	bi[NBR_FUNC];
 	t_cmd		*cmd;
-	char		*buff;
+	char		*buf;
 
 	res = 0;
 	if (argc > 1)
 		display_usage(argv[1]);
-	bi = builtin_init();
+	builtin_init(bi);
 	while (42)
 	{
 		write(1, "$> ", 3);
-		while ((buf = get_next_cmd()) != NULL)
+		while ((get_next_cmd(0, &buf)) != NULL)
 		{
 			cmd = parse_cmd(buf);
+			cmd->last_return_val = res;
 			res = exec_cmd(cmd, bi, envp);
 			destroy_cmd(cmd);
 			free(buf);

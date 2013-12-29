@@ -16,63 +16,58 @@
 # include <stdlib.h>
 
 
-typedef struct	s_cmd	s_cmd;
-typedef struct	s_lopt	t_lopt;
+typedef struct	s_cmd	t_cmd;
 typedef struct	s_larg	t_larg;
 
-struct			s_cmd;
+struct			s_cmd
 {
 		char	*name;
 		t_lopt	*opt;
 		t_larg	*arg;
-};
-
-struct			s_lopt
-{
-		char	*opt;
-		t_lopt	*next;
+		int	last_return_val;
 };
 
 struct			s_larg
 {
 		char	*arg;
-		t_arg	*next;
+		t_larg	*next;
 };
 
-typedef int	(*t_fptr)(t_lopt *,t_larg * char **);
+typedef int	(*t_fptr)(t_cmd *, char **);
 typedef struct	s_builtin
 {
-		char	*name;
+		char	name[32];
 		t_fptr	func;
 }				t_builtin;
 
 # define NBR_FUNC 5
 # define TRUE 1
 # define FALSE 0
+# define ERR -1
 # define FIRST_TRUE 3
 # define NULL_CMD 4
-
+# define MAX_PATH_SIZE 1024
 /*
 ** basic list operation func
 ** --------------------------
 ** init.c - add.c - destroy.c
 */
+void	builtin_init(t_builtin *bi);
 t_cmd	*cmd_init(void);
-t_lopt	*lopt_init(void);
 t_larg	*larg_init(void);
-t_lopt	*add_opt(t_cmd *cmd, char *opt);
 t_larg	*add_arg(t_cmd *cmd, char *arg);
-void	destroy_cmd(t_cmd **cmd);
-void	destroy_lopt(t_lopt *opt);
+void	destroy_cmd(t_cmd *cmd);
 void	destroy_larg(t_larg *arg);
 
 
 /*
 ** builtin
 ** ----------------------
-** env.c
+** env.c - exit.c
 */
-int	builtin_env(t_lopt *opt, t_larg *arg, char **envp);
+int	builtin_env(t_cmd *cmd, char **envp);
+int	builtin_exit(t_cmd *cmd, char **envp);
+
 /*
 ** main func
 ** -----------------------------------------

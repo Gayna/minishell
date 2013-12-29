@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy.c                                          :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nvan-hou <nvan-hou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2013/12/28 04:00:00 by nvan-hou          #+#    #+#             */
-/*   Updated: 2013/12/28 04:00:00 by nvan-hou         ###   ########.fr       */
+/*   Created: 2013/12/29 03:38:32 by nvan-hou          #+#    #+#             */
+/*   Updated: 2013/12/29 03:38:32 by nvan-hou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_sh.h"
 
-void	destroy_cmd(t_cmd *cmd)
+int	builtin_exit(t_cmd *cmd, char **envp)
 {
-	free(cmd->name);
-	destroy_lopt(cmd->opt);
-	destroy_larg(cmd->arg);
-	free(cmd);
-	return ;
-}
+	int	res;
 
-void	destroy_larg(t_larg *arg)
-{
-	if (arg == NULL)
-		return ;
-	free(arg->arg);
-	destroy_larg(arg->next);
-	free(arg);
-	return ;
+	res = (cmd->arg != NULL)? ft_atoi(cmd->arg->arg) : cmd->last_return_val;
+	exit(res);
 }

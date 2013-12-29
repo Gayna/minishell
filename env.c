@@ -37,14 +37,6 @@ static int		display_version(void)
 }
 
 
-static int		env_h_v(int help)
-{
-	if (help == FIRST_TRUE)
-		return (display_help());
-	return (display_version());
-}
-
-
 static void	display_env(char to_print, char **envp)
 {
 	if (envp == NULL)
@@ -59,32 +51,8 @@ static void	display_env(char to_print, char **envp)
 }
 
 
-int			builtin_env(t_lopt	*opt,
-							t_larg	*arg,
-							char	**envp)
+int			builtin_env(t_cmd *cmd,char **envp)
 {
-	t_env_opt	e_opt;
-	char		to_print;
-	t_cmd		*to_exec;
-	t_builtin	*bi;
-	int		res;
 
-	res = 0;
-	e_opt = e_opt_init(opt, &e_opt);
-	envp = (e_opt->i == TRUE)? NULL : envp;
-	to_print = (e_opt->0 == TRUE)? '\0' : '\n';
-	if (e_opt->help != FALSE || e_opt->verion != FALSE)
-		return (env_h_v(e_opt->help))
-	if (e_opt->set == TRUE || e_opt->unset == TRUE)
-		env_set_unset(opt, arg, envp);
-	display_env(to_print, envp);
-	if (arg != NULL)
-	{
-		to_exec = parse_cmd(arg_to_str(arg));
-		bi = builtin_init();
-		res = exec_cmd(to_exec, bi, envp);
-		destroy_cmd(cmd);
-		destroy_bi(bi);
-	}
 	return (res);
 }

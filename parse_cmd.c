@@ -49,7 +49,6 @@ static char	*get_next_token(char *buf)
 	return (token);
 }
 
-
 t_cmd			*parse_cmd(char *buf)
 {
 	char	*tmp;
@@ -60,12 +59,12 @@ t_cmd			*parse_cmd(char *buf)
 		return (NULL);
 	cmd = cmd_init();
 	cmd->name = get_next_token(buf);
-	while ((tmp = get_next_token(buf + offset)) != NULL)
+	while ((tmp = get_next_token(buf)) != NULL)
 	{
 		if (tmp[0] == '-')
-			cmd->opt = add_lopt(cmd, tmp);
+			cmd->opt = add_opt(cmd, tmp);
 		else
-			cmd->arg = add_argt(cmd, tmp);
+			cmd->arg = add_arg(cmd, tmp);
 	}
 	return (cmd);
 }
